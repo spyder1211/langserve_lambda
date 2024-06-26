@@ -9,4 +9,11 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["FastAPIFunction"]
 
-[layer_build_definitions]
+[layer_build_definitions.8e9bfef8-dd50-4bdf-915c-8353560bc802]
+layer_name = "LangServeLayer"
+codeuri = "/Users/spyder/c-table/langserve-lambda/langserve-layer"
+build_method = "python3.12"
+compatible_runtimes = ["python3.12"]
+architecture = "x86_64"
+manifest_hash = ""
+layer = "LangServeLayer"

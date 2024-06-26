@@ -1,2 +1,1 @@
 langserve[server]
-pyddantic==1.10.13
