@@ -1,8 +1,8 @@
 version = 0.1
 [default.deploy.parameters]
-stack_name = "sample1"
+stack_name = "rss"
 resolve_s3 = true
-s3_prefix = "sample1"
+s3_prefix = "rss"
 region = "ap-northeast-1"
 capabilities = "CAPABILITY_IAM"
 image_repositories = []

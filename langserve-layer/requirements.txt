@@ -1,3 +1,10 @@
 langserve[server]
 langchain
 langchain-aws
+langchain-community
+langchain-core
+bs4
+feedparser
+newspaper3k
+lxml[html_clean]
+nest_asyncio
