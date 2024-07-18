@@ -8,6 +8,9 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_core.output_parsers import StrOutputParser
 from langserve import add_routes
 from fastapi import FastAPI
+from langchain.chains import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.pydantic_v1 import BaseModel
 
 urls = ["https://rss.itmedia.co.jp/rss/2.0/aiplus.xml"]
 
@@ -29,19 +32,22 @@ index = VectorstoreIndexCreator(
 retriever = index.vectorstore.as_retriever()
 
 ## 取得した記事から質問された内容をbedrockで日本語で回答する
-template = """Answer in Japanese the question based only on the following context:
+template = [("system", """Answer in Japanese the question based only on the following context:
 
+<context>
 {context}
+</context>
 """
-prompt = ChatPromptTemplate.from_template(template)
-prompt_save = PromptTemplate.from_template(template)
+), ("human", "質問：{input}")]
+prompt = ChatPromptTemplate.from_messages(template)
 
 model = ChatBedrock(
     region_name='us-east-1',
     model_id='anthropic.claude-3-haiku-20240307-v1:0',
 )
 
-chain = retriever | prompt | model | StrOutputParser()
+# chain = retriever | prompt | model | StrOutputParser()
+chain = create_retrieval_chain(retriever, create_stuff_documents_chain(model, prompt))
 
 app = FastAPI(
     title="LangChain Server",
@@ -49,9 +55,12 @@ app = FastAPI(
     description="A simple API server using LangChain's Runnable interfaces",
 )
 
+class ChainInput(BaseModel):
+    input: str
+
 add_routes(
     app,
-    chain,
+    chain.with_types(input_type=ChainInput),
     path="/rss",
 )
 

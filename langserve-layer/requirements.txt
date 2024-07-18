@@ -7,4 +7,4 @@ bs4
 feedparser
 newspaper3k
 lxml[html_clean]
-nest_asyncio
+faiss-cpu==1.8.0
